@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ankan Ghosh | Portfolio</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      background: radial-gradient(circle at top, #0a0a0f, #050505);
+      color: white;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 60px 20px 30px;
+      position: relative;
+    }
+
+    .profile-pic {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 3px solid #00c3ff;
+      margin: 0 auto 20px;
+      background: url('ankanIEM.jpg') center/cover no-repeat;
+      box-shadow: 0 0 40px #00c3ff80, inset 0 0 20px #00c3ff40;
+      animation: float 4s ease-in-out infinite, glow 3s infinite alternate;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes glow {
+      from { box-shadow: 0 0 20px #00c3ff60; }
+      to { box-shadow: 0 0 40px #00c3ffcc; }
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #00c3ff;
+      margin-bottom: 10px;
+    }
+    h2 {
+      color: #bbb;
+      font-weight: 400;
+    }
+
+    .social-links {
+      margin: 25px 0;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .social-links a {
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      transition: 0.4s;
+    }
+
+    .social-links a:hover {
+      transform: scale(1.2);
+      background: #00c3ff;
+      box-shadow: 0 0 15px #00c3ff;
+    }
+
+    .social-links img {
+      width: 22px;
+      filter: invert(1);
+    }
+
+    section {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .certificates h2 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: #00c3ff;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      justify-items: center;
+      padding: 0 10px;
+    }
+
+    .cert-card {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 15px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.4s;
+    }
+
+    .cert-card:hover {
+      transform: scale(1.05);
+    }
+
+    .cert-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.4s;
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal.active {
+      display: flex;
+    }
+    .modal img {
+      max-width: 90%;
+      max-height: 85%;
+      border-radius: 15px;
+      box-shadow: 0 0 30px #00c3ff;
+      animation: zoomIn 0.4s ease;
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.6); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      .profile-pic { width: 140px; height: 140px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="profile-pic"></div>
+    <h1>Ankan Ghosh</h1>
+    <h2>B.Tech Student | IEM |</h2>
+
+    <h4>COMPUTER SCIENCE & ENGINEERING </h4>
+
+    <h6>| Specialization in nternet of Things (IoT), Cyber Security (CS), and Blockchain Technology (BCT) |</h6>
+
+    <h8> Developer | Innovator</h8>
+    <div class="social-links">
+      <a href="https://www.instagram.com/ankan546/" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram"></a>
+      <a href="https://www.facebook.com/profile.php?id=100089223105586" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+      <a href="https://www.linkedin.com/in/ankan-ghosh-827627384/" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn"></a>
+    </div>
+  </header>
+
+  <section class="certificates">
+    <h2>My Certificates</h2>
+    <div class="cert-grid" id="certGrid"></div>
+  </section>
+
+  <div class="modal" id="imgModal">
+    <img src="" alt="Certificate">
+  </div>
+
+  <script>
+    const certGrid = document.getElementById("certGrid");
+    const modal = document.getElementById("imgModal");
+    const modalImg = modal.querySelector("img");
+
+    // Load certificate images directly from same folder
+    const certFilenames = Array.from({length: 19}, (_, i) => `c${i+1}.jpg`);
+
+    certFilenames.forEach(src => {
+      const div = document.createElement("div");
+      div.className = "cert-card";
+      div.innerHTML = `<img src="${src}" alt="Certificate">`;
+      div.onclick = () => {
+        modalImg.src = src;
+        modal.classList.add("active");
+      };
+      certGrid.appendChild(div);
+    });
+
+    modal.onclick = () => modal.classList.remove("active");
+  </script>
+</body>
+</html>
